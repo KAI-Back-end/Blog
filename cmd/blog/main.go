@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/KAI-Back-end/Blog/internal/api/server"
 	"github.com/KAI-Back-end/Blog/internal/config"
-	"log"
+	"github.com/KAI-Back-end/Blog/internal/pkg/logger"
 	"time"
 )
 
@@ -20,18 +20,22 @@ func main() {
 	//TODO add closer pattern
 
 	ctx := context.Background()
-
 	cfg, err := config.NewConfig()
 
 	if err != nil {
 		panic(err)
 	}
 
-	srv := server.New(server.WithConfig(&cfg.Server))
+	log, err := logger.NewLogger(cfg.Logger)
+	if err != nil {
+		panic(err)
+	}
 
+	log.ErrorContext(ctx, "some_error")
+	srv := server.New(server.WithConfig(cfg.Server))
 	go func() {
 		if err = srv.Run(ctx); err != nil {
-			log.Println(err)
+			log.ErrorContext(ctx, "error starting server: ", err.Error())
 		}
 	}()
 

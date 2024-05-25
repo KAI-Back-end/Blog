@@ -2,6 +2,7 @@ package config
 
 import (
 	"github.com/KAI-Back-end/Blog/internal/api/server"
+	"github.com/KAI-Back-end/Blog/internal/pkg/logger"
 	"os"
 
 	"github.com/ilyakaznacheev/cleanenv"
@@ -13,8 +14,9 @@ const (
 )
 
 type Config struct {
-	App    App
-	Server server.Config
+	App    *App
+	Server *server.Config
+	Logger *logger.Config
 }
 
 type App struct {
@@ -29,7 +31,7 @@ func NewConfig() (*Config, error) {
 
 	cfgApp := new(Config)
 
-	if err := cleanenv.ReadConfig(os.Getenv("GONFIG_PATH"), cfgApp); err != nil {
+	if err := cleanenv.ReadConfig(os.Getenv("CONFIG_PATH"), cfgApp); err != nil {
 		return nil, err
 	}
 

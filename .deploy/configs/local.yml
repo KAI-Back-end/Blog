@@ -9,3 +9,13 @@ server:
   idle_timeout: 10 # in seconds
   read_timeout: 2 # in seconds
   write_timeout: 2 # in seconds (keep connection open)
+
+logger:
+  path: ./logs/dev.json
+  level: local
+  source: true
+  graylog:
+    use: true
+    conn_type: tcp
+    host: localhost
+    port: 5555
